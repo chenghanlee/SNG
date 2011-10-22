@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="../static/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+      }
+    </style>
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  </head>
+
+  <body>
+ 
+    <div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="/">Helpp.me</a>
+          <ul class="nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">Electronics</a></li>
+            <li><a href="#contact">Air Travel</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+        <div class="row">
+          <div class = "span-two-thirds">
+            <form method="POST" action="/signup"> 
+              <fieldset >
+                <legend>Sign Up</legend>
+                {{ form.csrf }}
+
+                <div class="clearfix">
+                  <label for="Item">Username</label>
+                  <div class="input">
+                    {{ form.username(class="span7 extra-large", type="text", placeholder="How should we call you?") }}
+                    <!-- <input class="span6" id="URL" name="URL" type="text" placeholder="Where did you find it?" /> -->
+                  </div>
+                </div>
+                
+                <div class="clearfix">
+                  <label for="Price">Email</label>
+                  <div class="input">
+                    {{ form.email(class="span7 extra-large", type="text", placeholder="How do we contact you?") }}
+                    <!-- <input class="span2" id="Price" name="Price" type="text" placeholder="How much?" /> -->
+                  </div>
+                </div>
+
+                <div class="clearfix">
+                  <label for="categories">Password</label>
+                  <div class="input">
+                    {{ form.password(class="span7 extra-large", type="password") }}
+                    <!-- <input class="span2" id="Price" name="Price" type="text" placeholder="How much?" /> -->
+                  </div>
+                </div>
+                
+                <div class="actions">
+                  <input type="submit" class="btn primary" value="Submit">
+                </div>
+                    
+              </fieldset>
+            </form>
+          </div>
+
+          <div class ="span-one-third">
+            <div class="minihero-unit">
+              <h4>How to Ask</h4>              
+              <p>
+                Is your question about programming?
+                We prefer questions that can be answered, not just discussed.
+                <br />
+                <br />     
+                Provide details. Share your research.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      
+      <footer>
+        <p>copyrighted 2011</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+  </body>
+<!--SHARE THIS-->
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e883fb86021d9b6"></script>
+<!--SHARE discuss-->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'helppme'; // required: replace example with your forum shortname
+    var disqus_developer = 1; // developer mode is on
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+</html>
+</html>

@@ -1,0 +1,57 @@
+{% macro render_login_form(id, login_form) %}
+<form id={{ id }} class="form-stacked" method="POST" action="/login"> 
+	<fieldset >
+		<div class="clearfix">
+		  <label for="Item">Username</label>
+		  <div class="input">
+		    <input class="span5" id="username" name="username" type="text" placeholder="What did you find?" />
+		  </div>
+		</div>
+
+		<div class="clearfix">
+		  <label for="url">Password</label>
+		  <div class="input">
+		    <input class="span5" id="password" name="password" type="text" placeholder="What did you find?" />
+		  </div>
+		</div>
+
+		<div class="actions">
+		  <input type="submit" class="btn primary" value="Submit">
+		</div>
+	</fieldset>
+</form>
+{% endmacro %}
+
+{% macro render_signup_form(id, signup_form) %}
+ <form id={{ id }} class="form-stacked" method="POST" action="/signup"> 
+	<fieldset >
+	<div id="email" class="clearfix">
+	  <label for="email">Email</label>
+	  <div class="input">
+	    <input class="span5" id="email" name="email" type="text" placeholder="What did you find?" />
+	  </div>
+	</div>
+
+	<div id="username" class="clearfix">
+	  <label for="username">Username</label>
+	  <div class="input">
+	    <input class="span5" id="username" name="username" type="text" placeholder="What should we call you?" />
+	  </div>
+	</div>
+
+	<div id="password" class="clearfix">
+	  <label for="url">Password</label>
+	  <div class="input">
+	    <input class="span5" id="password" name="password" type="text" />
+	    <span class="help-block">6 characters or longer. Make it tricky.</span>
+	  </div>
+	</div>
+
+	<div class="actions">
+	  <input type="submit" class="btn primary" value="Submit">
+	</div>
+
+	</fieldset>
+	</form>
+</form>
+{% endmacro %}
