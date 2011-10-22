@@ -1,0 +1,145 @@
+{% from "macros/forms.html" import render_login_form, render_signup_form %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="../static/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+      }
+    </style>
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  </head>
+
+  <body>
+    <!-- login form for popup modal -->
+    <div id="login" class="modal hide fade">
+
+      <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h1>Login <small>to your Helpp.me account</h1>
+      </div>
+
+      <div class="modal-body">
+        {{ render_login_form('login-form-topbar', login_form) }}
+      </div>
+    </div>
+
+      <!-- sign-up form modal -->
+    <div id="signup" class="modal hide fade">
+
+      <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h1>Sign Up <small>for your Helpp.me account</h1>
+      </div>
+
+      <div class="modal-body">  
+        {{ render_signup_form('signup-form-topbar', signup_form) }}
+      </div>
+
+    </div>
+
+    <!--hybrid login or signup modal form -->
+    <div id="hybrid" class="modal hide fade" style="width:400px">
+
+      <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h3>You need to sign up or login to do that<h3>
+      </div>
+
+      <div class="modal-body">
+        
+        <div class="row" style="padding:0px 15px 0px;">
+          <ul class="tabs">
+            <li class="active" id="signup-tab">
+              <a href="#" onclick="showSignupForm(); return false;">Sign Up</a>
+            </li>
+            <li id="login-tab">
+              <a href="#" onclick="showLoginForm(); return false;">Login</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row" id="signup-form" style="padding:0px 15px 0px;">
+          {{ render_signup_form('signup-form-body', signup_form) }}
+        </div>
+        <div class="row" id="login-form" style="padding:0px 15px 0px;">
+          {{ render_login_form('login-form-body',login_form) }}
+        </div>
+        
+      </div>
+
+    </div>
+
+    <div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="/">Helpp.me</a>
+          <ul class="nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">Electronics</a></li>
+            <li><a href="#contact">Air Travel</a></li>
+          </ul>
+          <ul class="nav secondary-nav">
+
+            {% if user.is_anonymous() %}
+              <li style="margin-right:15px";><button data-controls-modal="signup" data-backdrop="true" data-keyboard="true" class="btn primary x-small">Sign up</button></li>
+              <li><button button data-controls-modal="login" data-backdrop="true" data-keyboard="true" class="btn default x-small">Login</button></li>
+            {% else %}
+              <ul class="nav secondary-nav">
+                <li class="dropdown" data-dropdown="dropdown">
+                  <a href="#" class="dropdown-toggle">{{ user.name }}</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/user/{{current_user.name}}">History</a></li>
+                     <li class="divider"></li>
+                    <li><a href="/logout">Logout</a></li>
+                  </ul>
+                </li>
+              </ul>
+            {% endif %}
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      {% block container %}{% endblock %}
+ 
+      <footer>
+        <p>copyrighted 2011</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+  </body>
+<!-- JQUERY -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<!--SHARE THIS-->
+<!-- <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e883fb86021d9b6"></script> -->
+<!-- BOOSTRAP -->
+<script type="text/javascript" src="../static/js/bootstrap-alerts.js"></script>
+<script type="text/javascript" src="../static/js/bootstrap-dropdown.js"></script>
+<script type="text/javascript" src="../static/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="../static/js/bootstrap-twipsy.js"></script>
+<!-- CUSTOM JS -->
+<script type="text/javascript" src="../static/js/custom.js"></script>
+</html>

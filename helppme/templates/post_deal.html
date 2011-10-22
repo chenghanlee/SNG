@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="../static/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+      }
+    </style>
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  </head>
+
+  <body>
+ 
+    <div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="/">Helpp.me</a>
+          <ul class="nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">Electronics</a></li>
+            <li><a href="#contact">Air Travel</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+        <div class="row">
+          <div class = "span3">
+            &nbsp;
+          </div>
+
+          <div class = "span10 colored-border">
+            {{ form.title.error }}
+            {{ form.url.error }}
+            {{ form.price.error }}
+            {{ form.categories.error }}
+            {{ form.csrf.error }}
+          
+            <form class="form-stacked" method="POST" action="/post"> 
+              <fieldset >
+                <legend><h1>Share a deal <small> tell us more about it</small></h1></legend>
+                <hr style = "margin-top:0px"/>
+                {{ form.csrf }}
+
+                <div class="clearfix">
+                  <label for="Item">What did you find?</label>
+                  <div class="input">
+                    {{ form.title(class="span7", type="text", placeholder="Write a short title for this deal") }}
+                    <!-- <input class="span6" id="Item" name="Item" type="text" placeholder="What did you find?" /> -->
+                  </div>
+                </div>
+                <br />
+                <div class="clearfix">
+                  <label for="url">Where can we find it?</label>
+                  <div class="input">
+                    {{ form.url(class="span7", type="text", placeholder="Type the website URL or just the store name") }}
+                    <!-- <input class="span6" id="URL" name="URL" type="text" placeholder="Where did you find it?" /> -->
+                  </div>
+                </div>
+                <br />  
+                <div class="clearfix">
+                  <label for="categories">Category</label>
+                  <div class="input">
+                    {{ form.categories(class="span3") }}
+                    <!-- <input class="span2" id="Price" name="Price" type="text" placeholder="How much?" /> -->
+                  </div>
+                </div>
+                <br />
+                <div class="clearfix">
+                  <label for="description">Description (optional)</label>
+                  <div class="input">
+                    {{ form.description(class="span7", rows=7, placeholder="any additional details or instructions?") }}
+                    <!-- <input class="span2" id="Price" name="Price" type="text" placeholder="How much?" /> -->
+                  </div>
+                </div>
+                
+                <div class="actions">
+                  <input type="submit" class="btn primary large" value="Submit">
+                </div>
+                    
+              </fieldset>
+            </form>
+          </div>
+
+          <div class = "span3">
+            &nbsp;
+          </div>
+
+        </div>
+      
+      <footer>
+        <p>copyrighted 2011</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+  </body>
+<!--SHARE THIS-->
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e883fb86021d9b6"></script>
+<!--SHARE discuss-->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'helppme'; // required: replace example with your forum shortname
+    var disqus_developer = 1; // developer mode is on
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+</html>
+</html>
