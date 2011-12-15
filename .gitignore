@@ -1,0 +1,22 @@
+# Compilred source #
+###################
+*.pyc
+
+# Type of Files #
+#################
+*.less
+*.png
+*.jpg
+*.md
+
+# Folders #
+###########
+*/docs
+*/examples
+*/lib
+#/tests
+
+# Specific Files #
+##################
+LICENSE
+Makefile
