@@ -1,0 +1,89 @@
+{% extends "template.html" %}
+{% from "macros/deal_macros.html" import render_deal_description %}
+{% from "macros/navbar.html" import render_sort_tab, render_user_profile_filter_sidebar, render_user_action_nav, render_author_action_nav %}
+{% block title %}{{ owner.name|capitalize }}'s history - SAVNG{% endblock %}
+{% block container %}
+<div class="content">
+    <div class="row">
+      <div class="span-two-thirds">
+        <div class="row">
+          <div class="span-upvote">
+            <h3 style="margin-top: 10px;">Show</h3>
+          </div>
+          <div class="span-deal">
+            {{ render_sort_tab('user', owner.name, current_filter, current_sort)}}
+          </div>
+        </div>
+      </div>
+    </div> 
+ 
+    <!-- /tab row -->
+    <div class="row">
+      <div class="span-two-thirds row" style="margin-left: 0px;">
+        <div class="span-upvote">
+         {{ render_user_profile_filter_sidebar(owner.name, current_filter, current_sort) }}
+        </div>
+        <!-- /span-upvote -->
+        <div class="span-deal">
+          {% set num_deals = deal_seq_nums|length %}
+          {% if num_deals == 0 %}
+            <div id="nothing">
+              <h2 style="margin-bottom: 6px">There is nothing here :(</h2>
+            </div>
+          {% endif %}
+          {% for num in deal_seq_nums %}
+            {% set deal = get_deal(num) %}
+            <div id="{{ deal['id'] }}" class="deal row" style="margin-top: -2px; margin-left: 0px; padding-bottom: 12px;">
+              {{ render_deal_description(deal) }}
+            </div>
+            <br />
+          {% endfor %}
+          {% if num_deals > 0 %}
+            <div class="pagination" style="float: left;">
+              <ul>
+                {% if has_previous %}
+                  <li class="previous">
+                    <a href="/user/{{owner.name}}/{{current_filter}}/{{current_sort}}/{{previous_page}}">Previous</a>
+                  </li>
+                {% else %}
+                  <li class="previous disabled">
+                    <a >Previous</a>
+                  </li>
+                {% endif %}
+                
+                {% if has_next %}
+                  <li class="next">
+                    <a href="/user/{{current_filter}}/{{current_sort}}/{{next_page}}">Next</a>
+                  </li>
+                {% else %}
+                  <li class="next disabled">
+                    <a>Next</a>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+          {% endif %}
+        </div>
+        <!-- /span-deal -->
+      </div>
+      <!-- /span-two-thirds -->
+      <div class="span-one-third">
+        <div class="well">
+          {% set name = owner.name|capitalize %}
+          <h4 class="color-brown" style="margin-bottom: 9px;">{{ name }}'s History</h4>
+          <p>
+            {{ name }} has <b>shared {{ owner.num_deals_shared() }} deals</b> and <b>received {{ owner.num_likes_received() }} total likes</b> for those deals. 
+          </p>
+
+          <p>In addition, {{ name }} has <b>liked {{ owner.num_deals_liked() }} deals</b>{% if owner.num_deals_liked() %}, but probably drained his or her bank account as the result :( {% endif %}
+          </p>
+
+        </div>
+        <br />
+      </div> 
+      <!-- /span-one-third -->
+    </div> 
+    <!-- /row -->
+  </div> 
+  <!-- /content -->
+{% endblock %}

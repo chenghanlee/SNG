@@ -1,4 +1,4 @@
-from helppme import app
+from helppme.globals import app
 
 if __name__ == "__main__":
 	app.run()

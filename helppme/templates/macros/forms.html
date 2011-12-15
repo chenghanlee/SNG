@@ -1,57 +1,83 @@
-{% macro render_login_form(id, login_form) %}
-<form id={{ id }} class="form-stacked" method="POST" action="/login"> 
+{% macro render_login_form(id) %}
+<form id={{ id }} class="form-stacked" method="POST" action="/user/login"> 
 	<fieldset >
 		<div class="clearfix">
 		  <label for="Item">Username</label>
 		  <div class="input">
-		    <input class="span5" id="username" name="username" type="text" placeholder="What did you find?" />
+		    <input class="span5" id="username" name="username" type="text"/>
 		  </div>
 		</div>
 
 		<div class="clearfix">
 		  <label for="url">Password</label>
 		  <div class="input">
-		    <input class="span5" id="password" name="password" type="text" placeholder="What did you find?" />
+		    <input class="span5" id="password" name="password" type="text"/>
+		     <span class="help-block">Forgot your <a href="#" onclick="showForgotPasswordForm(); return false;">password</a>?</span>
 		  </div>
 		</div>
 
-		<div class="actions">
-		  <input type="submit" class="btn primary" value="Submit">
+		<div class="actions clearfix">
+		  <input id="login-button" type="submit" class="btn primary" value="Login" />
 		</div>
 	</fieldset>
 </form>
 {% endmacro %}
 
-{% macro render_signup_form(id, signup_form) %}
- <form id={{ id }} class="form-stacked" method="POST" action="/signup"> 
+{% macro render_signup_form(id) %}
+ <form id={{ id }} class="form-stacked" method="POST" action="/user/signup"> 
 	<fieldset >
-	<div id="email" class="clearfix">
-	  <label for="email">Email</label>
-	  <div class="input">
-	    <input class="span5" id="email" name="email" type="text" placeholder="What did you find?" />
-	  </div>
-	</div>
+		<div id="email" class="clearfix">
+		  <label for="email-input">What's your email?</label>
+		  <div class="input">
+		    <input class="span5" id="email-input" name="email" type="text" />
+		  </div>
+		</div>
 
-	<div id="username" class="clearfix">
-	  <label for="username">Username</label>
-	  <div class="input">
-	    <input class="span5" id="username" name="username" type="text" placeholder="What should we call you?" />
-	  </div>
-	</div>
+		<div id="username" class="clearfix">
+		  <label for="username-input">Pick a username</label>
+		  <div class="input">
+		    <input class="span5" id="username-input" name="username" type="text" />
+		  </div>
+		</div>
 
-	<div id="password" class="clearfix">
-	  <label for="url">Password</label>
-	  <div class="input">
-	    <input class="span5" id="password" name="password" type="text" />
-	    <span class="help-block">6 characters or longer. Make it tricky.</span>
-	  </div>
-	</div>
+		<div id="password" class="clearfix">
+		  <label for="password-input">Choose a password</label>
+		  <div class="input">
+		    <input class="span5" id="password-input" name="password" type="password" />
+		    <span class="help-block">6 characters or longer. Make it tricky.</span>
+		  </div>
+		</div>
 
-	<div class="actions">
-	  <input type="submit" class="btn primary" value="Submit">
-	</div>
-
+		<div class="actions">
+		  <input id="signup-button" type="submit" class="btn primary" value="Sign Up">
+		  <p></p>
+		  <span class="help-block"><p><small>By creating an account, you agree to the <a href="/terms/" target="_blank">Terms of Service</a> and <a href="/privacy/" target="_blank">Privacy Policy</a></small></p></span>
+		</div>
 	</fieldset>
 	</form>
+</form>
+{% endmacro %}
+
+{% macro render_forgot_password_form() %}
+<form id="forgot-password-form" class="form-stacked" method="POST" action="/user/forgot_password/">
+	<fieldset>
+
+	    <div class="clearfix" id="email">
+	      	<label for="email">What's your email address?</label>
+	      	<div class="input">
+	          	<input class="span5" id="email" name="email" type="text" tabindex="1"/>
+      		</div>
+	    </div>
+	    <!-- username -->
+
+    	<div class="actions clearfix span5" style="margin-top: 20px;">
+      		<input id="password-reset-button" type="submit" class="btn primary" value="Recover Password" tabindex="2">
+      		<button id="cancel-password-reset-button" class="btn" onclick="hideForgotPasswodForm(true); return false;" >Cancel</button>
+    	</div>
+    	<!-- button -->
+
+	    </div>
+    	
+ 	</fieldset>
 </form>
 {% endmacro %}

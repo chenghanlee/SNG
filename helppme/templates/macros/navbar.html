@@ -1,0 +1,186 @@
+{% macro render_main_nav(categories, current_category) %}     
+	<ul class="nav">
+	{% for category in categories %}
+		{% if category == current_category %}
+			<li class='active'><a href='/deals/{{category}}'>{{category|capitalize}}</a></li>
+		{% else %}
+			<li><a href='/deals/{{category}}'>{{category|capitalize}}</a></li>
+		{% endif %}
+	{% endfor %}
+	</ul>
+{% endmacro %}
+
+{% macro render_sub_nav() %}
+ <ul class="nav secondary-nav">
+	{% if user.is_anonymous() %}
+	  <li style="margin-right:15px";>
+	  	<button data-controls-modal="hybrid" data-backdrop="true" data-keyboard="true" class="btn primary x-small" onclick="showForm('signup');">Create Account</button>
+	  </li>
+	  <li>
+	  	<button data-controls-modal="hybrid" data-backdrop="true" data-keyboard="true" class="btn default x-small" onclick="showForm('login');">Login</button>
+	  </li>
+	{% else %}
+	  <ul class="nav secondary-nav">
+	    <li class="dropdown" data-dropdown="dropdown">
+	      <a href="#" class="dropdown-toggle">{{ user.name }}</a>
+	      <ul class="dropdown-menu">
+	        <li>
+	        	<a href="/user/{{user.name}}">History</a>
+	        </li>
+	         <li class="divider"></li>
+	        <li>
+	        	<a href="/user/logout">Logout</a>
+	        </li>
+	      </ul>
+	    </li>
+	  </ul>
+	{% endif %}
+</ul>
+{% endmacro %}
+
+{% macro render_sort_tab(part_1, part_2, part_3, current_sort) %}
+<ul class="tabs" data-tabs="tabs" style="margin-top: 10px; margin-bottom: 18px;">	
+  	<li class="dropdown" data-dropdown="dropdown" style="float:right">
+    	<a href="#" class="dropdown-toggle">{{ current_sort|capitalize }}</a>
+	    <ul class="dropdown-menu">
+	    {% for sort in sorts %}
+			{% if sort == current_sort %}
+				<li class="not-available">{{ sort|capitalize }}</li>
+			{% else %}
+				<li><a href="/{{ part_1 }}/{{ part_2 }}/{{ part_3 }}/{{ sort }}">{{ sort|capitalize }}</a></li>
+			{% endif %}
+		{% endfor %}	
+	    </ul>
+  	</li>     
+</ul>    
+{% endmacro %}
+
+{% macro render_user_history_sort_tab(name, filter, current_sort) %}
+<ul class="tabs" data-tabs="tabs" style="margin-top: 10px; margin-bottom: 18px;">	
+  	<li class="dropdown" data-dropdown="dropdown" style="float:right">
+    	<a href="#" class="dropdown-toggle">{{ current_sort|capitalize }}</a>
+	    <ul class="dropdown-menu">
+	    {% for sort in sorts %}
+			{% if sort == current_sort %}
+				<li class="not-available">{{ sort|capitalize }}</li>
+			{% else %}
+				<li><a href="/user/{{ name }}/{{ current_category }}/{{ sort }}">{{ sort|capitalize }}</a></li>
+			{% endif %}
+		{% endfor %}	
+	    </ul>
+  	</li>     
+</ul>    
+{% endmacro %}
+
+
+{% macro render_category_filter_sidebar(current_category, current_date, current_sort) %}
+<!-- filter by category -->
+ <ul id="category_filter" class="unstyled">
+	{% for category in categories %}
+		{% if category == current_category %}
+			{% set sidebar_class = "sidebar selected" %}
+			{% set a_class = "voted" %}
+		{% else %}
+			{% set sidebar_class = "sidebar" %}
+			{% set a_class = "color-grey" %}
+		{% endif %}
+		<li id="{{ category }}" class="{{ sidebar_class }}" ><a class="{{a_class}}" href="/deals/{{category}}/{{current_date}}/{{current_sort}}">{{ category|capitalize }}</a></li>
+	{% endfor %}
+	<li id="less" class="sidebar"><a class="color-grey" onclick="lessSidebar();">Less</a>&nbsp;<span class="up-arrow"></span></li>
+	<li id="more" class="sidebar"><a class="color-grey" >More</a>&nbsp;<span class="down-arrow"></span></li>
+</ul>
+{% endmacro %}
+
+
+{% macro render_date_filter_sidebar(current_category, current_date, current_sort) %}
+<!-- filter by date range -->
+<ul id="date_filter" class="unstyled">
+	{% for date in date_ranges %}
+  		{% if date == "today" %}
+  			{% if date == current_date %}
+    			<li id="{{ date }}" class="sidebar selected"><a class="voted" href="/deals/{{ current_category }}/{{ date }}/{{ current_sort }}">{{ date|capitalize }}</a></li>
+    		{% else %}
+    			<li id="{{ date }}" class="sidebar"><a class="color-grey" href="/deals/{{ current_category }}/{{ date }}/{{ current_sort }}">{{ date|capitalize }}</a></li>
+    		{% endif %}
+  		{% else %}
+  			{% if date == current_date %}
+  				<li id="{{ date }}" class="sidebar selected"><a class="voted" href="/deals/{{ current_category }}/{{ date }}/{{ current_sort }}">This {{ date|capitalize }}</a></li>
+  			{% else %}
+    			<li id="{{ date }}" class="sidebar"><a class="color-grey" href="/deals/{{ current_category }}/{{ date }}/{{ current_sort }}">This {{ date|capitalize }}</a></li>
+    		{% endif %}
+  		{% endif %}
+	{% endfor %}
+</ul>    
+{% endmacro %}
+
+
+{% macro render_user_profile_filter_sidebar(owner_name, current_filter, current_sort) %}
+<ul id="category_filter" class="unstyled">
+	{% for filter in user_history_filters %}
+		{% if filter != 'bookmarked' or user.name == owner_name %}
+			{% if filter == current_filter %} 
+				<li id="{{ filter }} "class='sidebar selected'><a class="voted"href="/user/{{owner_name}}/{{ filter }}/{{ current_sort }}">{{ filter|capitalize }}</a></li>
+			{% else %}
+				<li id="{{ category }}" class="sidebar"><a class="color-grey" href="/user/{{owner_name}}/{{ filter }}/{{ current_sort }}">{{ filter|capitalize }}</a></li>
+			{% endif %}
+		{% endif %}
+	{% endfor %}		
+</ul>    
+{% endmacro %}
+
+{% macro render_user_action_nav(deal, preview) %}
+<ul class="user-actions-2">
+	{% if preview == False %}
+		<li id="comments">
+			<a class="no-background" href="{{ deal['url'] }}">Continue reading</a> 
+		</li>
+	{% endif %}
+	{% if user_has('vote', deal['id']) %}
+		<li id="like">
+			<a class="no-background not-available-2">Like</a>
+		</li>	
+	{% else %}
+		<li id="like">
+			<a class="no-background" onclick="likeDeal('{{ deal['id'] }}'); return false;" href="#">Like</a>
+		</li>	
+	{% endif %}
+	{% if deal['author_id']|string == user.id|string and preview == True %}
+		<li id="edit">
+			<a class="no-background" href="#" onclick="editDeal('{{ deal['id'] }}'); return false;">Edit</a> 
+		</li>
+	{% endif %}
+ 	<li class="dropdown" data-dropdown="dropdown" >
+ 		<a href="#" class="dropdown-toggle">More</a>
+    	<ul class="dropdown-menu">
+    		{% if user_has('save', deal['id']) %}
+    			<li id="bookmark" class="not-available">Bookmark</li>	
+    		{% else %}
+ 				<li id="bookmark"><a href="#" onclick="saveDeal('{{ deal['id'] }}'); return false;">Bookmark</a></li>
+ 			{% endif %}
+ 			{% if user_has('flag', deal['id']) %}
+    			<li id="flag" class="not-available">Flag for spam</li>	
+    		{% else %}
+ 				<li id="flag"><a href="#" onclick="flagDeal('{{ deal['id'] }}'); return false;">Flag for spam</a></li>
+ 			{% endif %}
+ 			{% if deal['author_id']|string == user.id|string %}
+ 				<li class="divider"></li>
+ 				<li id="delete"><a href="#" onclick="deleDeal('{{ deal['id'] }}', '{{ show_comments }}'); return false;">Delete</a></li>
+ 			{% endif %}
+	    </ul>
+	</li>
+
+</ul>
+{% endmacro %}
+
+
+{% macro render_author_action_nav(deal_id, deal_seq_num, deal_short_title, slideUp=True) %}
+<ul class='user-actions'>
+ 	<li class="dropdown" data-dropdown="dropdown" >
+ 		<a href="#" class="dropdown-toggle">Actions</a>
+    	<ul class="dropdown-menu">
+    		<li id="edit"><a href="/deals/{{deal_seq_num}}/{{deal_short_title}}/edit">Edit</a></li>
+			<li id="delete"><a href="#" onclick="deleDeal('{{ deal_id }}', '{{ slideUp }}'); return false;">Delete</a></li>
+	    </ul>
+	</li>
+</ul>
+{% endmacro %}
