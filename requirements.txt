@@ -1,0 +1,14 @@
+Flask
+Flask-Celery
+Flask-Login
+Flask-Mail
+Flask-Markdown
+https://github.com/sbook/flask-mongoengine/tarball/master
+Flask-WTF
+Markdown
+celery
+hiredis
+redis
+simplejson
+virtualenv
+uwsgi

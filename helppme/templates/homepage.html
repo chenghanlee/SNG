@@ -1,71 +1,101 @@
 {% extends "template.html" %}
-{% block title %}something here{% endblock %}
+{% from "macros/deal_macros.html" import render_deal_description %}
+{% from "macros/navbar.html" import render_sort_tab, render_category_filter_sidebar, render_date_filter_sidebar, render_user_action_nav, render_author_action_nav %}
+{% block title %}{{current_sort|capitalize}} {% if current_category != "everything" %} {{current_category}} {% endif %} deals, coupons, and bargain - SAVNG{% endblock %}
 {% block container %}
-  <div class="row">
-    <div class="span-two-thirds">
-
-      <div class="deal">
+<div class="content">
+    <div class="row">
+      <div class="span-two-thirds">
+        <div class="row">
+          <div class="span-upvote">
+            <h3 style="margin-top: 10px;">Show</h3>
+          </div>
+          <div class="span-deal">
+            {{ render_sort_tab('deals', current_category, current_date, current_sort)}}
+          </div>
+        </div>
+      </div>
+    </div> 
+ 
+    <!-- /tab row -->
+    <div class="row">
+      <div class="span-two-thirds row" style="margin-left: 0px;">
 
         <div class="span-upvote">
-          <h6 class="small-line-height" style="float:right; margin-top:60px">34 pts</h6>
-        </div>
+         {{ render_category_filter_sidebar(current_category, current_date, current_sort) }}
+         <hr />
+         {{ render_date_filter_sidebar(current_category, current_date, current_sort) }}
+          </div>        
+        <!-- /span-upvote -->
 
         <div class="span-deal">
-          <ul class="tabs" data-tabs="tabs" >
-            <li><a href="#">Trending</a></li>
-            <li><a href="#">Popular</a></li>
-            <li><a href="#">Newest</a></li>
-            <li class="dropdown" data-dropdown="dropdown" style="float:right">
-              <a href="#" class="dropdown-toggle">Sort By</a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Today</a></li>
-                <li><a href="#">This Week</a></li>
-                <li><a href="#">This Month</a></li>
-                <li><a href="#">This Year</a></li>
+          {% set num_deals = deal_seq_nums|length %}
+          {% if num_deals == 0 %}
+            <div id="nothing">
+              <h2>There are no deals here :(</h2>
+            </div>
+          {% endif %}
+          <!-- no deals available in this category-->
+
+          {% for num in deal_seq_nums %}
+            {% set deal = get_deal(num) %}
+            <div id="{{ deal['id'] }}" class="deal row" style="margin-top: -2px; margin-left: 0px; margin-bottom:30px;">
+              {{ render_deal_description(deal) }}
+            </div>
+          {% endfor %}
+          <!-- list of deals -->
+
+          {% if num_deals > 0 %}
+            <div class="pagination" style="float: left;">
+              <ul>
+                {% if has_previous %}
+                  <li class="previous">
+                    <a href="/deals/{{current_category}}/{{current_date}}/{{current_sort}}/{{previous_page}}">Previous</a>
+                  </li>
+                {% else %}
+                  <li class="previous disabled">
+                    <a >Previous</a>
+                  </li>
+                {% endif %}
+                
+                {% if has_next %}
+                  <li class="next">
+                    <a href="/deals/{{current_category}}/{{current_date}}/{{current_sort}}/{{next_page}}">Next</a>
+                  </li>
+                {% else %}
+                  <li class="next disabled">
+                    <a>Next</a>
+                  </li>
+                {% endif %}
               </ul>
-            </li>     
-          </ul>
+            </div>
+          {% endif %}
+          <!--  span-pagination -->
+        </div> 
+        <!-- /span-deal -->
 
-          <h4 class="small-line-height">Leather Sleeve with Modem Pouch for Apple iPad and HP TouchPad $399 buy now!</h4>
-          <div style="border-left: 5px solid #eee; padding-left: 15px;">
-            <p style="margin-top: 9px">Vestibulum id ligula porta felis euismod semper. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus, nisi erat porttitor</p>
-            <p>amazon.com - electronics - soccerbud - 4 hours ago - <a href="#">374 comments</a></p>
-          </div>
-
-        <br />
-        <br />
-        </div>
       </div>
+      <!-- /span-two-thirds -->
 
-      <div class="deal">
+      <div class="span-one-third">
 
-        <div class="span-upvote">
-          <h6 class="small-line-height" style="float: right;">3250 pts</h6>
-          <a style="float: right;" data-controls-modal="hybrid" data-backdrop="true" data-keyboard="true" rel="twipsy" data-original-title="vote" href="#"><img src="../static/thumb-up.png"/></a>
+        <div class="mini-well">
+          <h3 class="color-brown" style="margin-bottom: 9px;">What is Savng?</h3>
+          <p>Savng is a community that find and share deals with each other. Here are some great bargains that we've found. </p>
         </div>
 
-        <div class="span-deal">
-          <h4 class="small-line-height"> Pouch for Apple iPad and HP TouchPad $399 buy now!</h4>
-          <div style="border-left: 5px solid #eee; padding-left: 15px;">
-            <p style="margin-top:9px">Vestibulum Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus, nisi erat porttitor</p>
-            <p>Best Buy BM - electronics - scrooge mcdooge - 2 hours ago - <a href="#"> 1000 comments</a></p>
-          </div>
+        <div class="mini-well">
+          {% if user.is_anonymous() %}
+            <h3><a class="color-light-blue" data-controls-modal="hybrid" data-backdrop="true" data-keyboard="true">Found a deal? Share it.</a></h3>
+          {% else %}
+            <h3><a class="color-light-blue" href="/deals/post">Found a deal? Share it.</a></h3>
+          {% endif %}
         </div>
-      </div>
-       
-    </div>          
 
-    <div class="span-one-third">
-
-      <div class="minihero-unit" style="margin-top:54px">
-        <h4>Hello, world!</h4>
-        <p>Helppme is a website that helps you find the best and cheapest deals on the internet. 
-          <br />
-          <br />
-          Helpp.me is 100% free.
-        </p>
-      </div>
-    </div>
-
-  </div>
+      </div> 
+      <!-- /span-one-third -->
+    </div> 
+    <!-- /row -->
+  </div> 
+  <!-- /content -->
 {% endblock %}

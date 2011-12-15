@@ -1,0 +1,99 @@
+{% from "macros/navbar.html" import render_user_action_nav, render_author_action_nav %}
+
+{% macro render_deal_description(deal, render_description=False) %}
+	<div class="deal-title">
+		{% if deal['location'] %}
+			{% set link = deal['location'] %}
+		{% else %}
+			{% set link = deal['url'] %}
+		{% endif %}
+		<h4 class="small-line-height"><a href="{{ link }}" style="#000000;">{{ deal['title'] }}</a></h4>
+	</div>
+	<!-- deal title -->
+	<div class='description'>
+		<ul class="horizontal-list">
+			<li> 
+				<span id="likes"><span id="num-likes">{{ deal['num_votes'] }}</span> likes</span> &middot;
+			</li>
+			<li>
+				<a class="color-grey"href="http://127.0.0.1:5000{{ deal['url'] }}#disqus_thread" onclick="return false;"></a> &middot;	
+			</li>
+			<li>
+				{{ deal['created']|prettify }} &middot;	
+			</li>
+			<li>
+				in {{ deal['category']|capitalize }}
+			<li>
+		</ul>
+		<!-- <p class="meta-info color-grey" style="margin-bottom: 0px">
+			<span id="likes"><span id="num-likes">{{ deal['num_votes'] }}</span> likes</span> - 123 comments - {{ deal['date_created'] }} - in {{ deal['category']|capitalize }}
+		</p> -->
+		<!-- meta information -->
+
+		{% if render_description %}
+			<br />
+			<div class="details">
+				{{ deal['description']|markdown }}
+				{% if deal['edited'] %}
+		    		<br />
+		    		<p><em>last edited {{ deal['edited']|prettify }}</em></p>
+		    	{% endif %}
+		    </div>
+		    <div class="edit" style="display: none;">
+		    	{{ render_edit_deal_description(deal) }}
+		    </div>
+		{% endif %}
+		<!-- descripton -->
+
+		<div class='deal-user-actions' style="float: left">
+			{{ render_user_action_nav(deal, render_description) }}
+		</div>
+		<!-- user actions -->
+		
+		{% if render_description %}
+			<div class="addthis_toolbox addthis_default_style" id="social-network-buttons" style="float: right; margin-top: 1px;">
+				<a class="addthis_button_facebook"></a>
+				<a class="addthis_button_twitter"></a>
+				<a class="addthis_button_email"></a>
+				<a class="addthis_counter addthis_bubble_style"></a>
+			</div>
+		{% endif %}
+		<!-- add this buttons -->
+	</div>
+{% endmacro %}
+
+{% macro render_deleted_deal_description(deal, render_preview=True) %}
+	<div class="deal-title" style="margin-bottom: 6px;">
+		<h4 class="small-line-height" style="margin-bottom: 9px">Deleted</h4>
+	</div>
+	<div class="description">
+		<p> This deal has been deleted by its author</p>
+	</div>
+
+    <div class="deal-user-actions">
+      <ul class='user-actions'>
+        <li class="dropdown" data-dropdown="dropdown" >Actions</li>
+      </ul>
+    </div>
+{% endmacro %}
+
+{% macro render_edit_deal_description(deal) %}
+	<form id="{{ deal['id'] }}" class="edit-form form-stacked" style="padding-left: 0px;"> 
+      	<fieldset>
+      		<div class='clearfix' id="description">
+	        	<div class="input">
+	        		<textarea class="span8" id="description" name="description" type="text" rows=10/>{{ deal['description'] }}</textarea>
+	        		{% if error %}
+	        			<span class="help-inline">{{ error }}</span>
+	        		{% endif %}
+	          	</div>
+	        </div>
+	        <div class='clearfix'>
+	        	<div class="actions">
+	          		<input type="Submit" class="btn primary" id="edit-button" value="Edit">
+	          		<button type="reset" class="btn" onclick="cancelEdit(); return false;">Cancel</button>
+	        	</div>
+	       	</div>
+      	</fieldset>
+    </form>
+{% endmacro %}

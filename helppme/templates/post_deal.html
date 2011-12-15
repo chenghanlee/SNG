@@ -1,121 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>{% block title %}{% endblock %}</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
+{% extends "template.html" %}
+{% from "macros/forms.html" import render_deal_submission_form %}
+{% block title %}Share a deal with the community{% endblock %}
+{% block container %}
+  <!-- Main hero unit for a primary marketing message or call to action -->
+  <div class="content">
+    
+    <div class="row" style="margin-top: 20px">
+      <br />
+      <br />
+      <h1 class="color-brown" style="margin-left: 20px">Share a deal</h1>
+      <!--  page header-->
+      <div class="span-two-thirds row" >
+        <div class="well span9" style="padding-right: 0px; margin-left: 0px;">
+          <form id="deal-submit-form" class="form-stacked" method="POST" action="/deals/post/" style="padding-left: 0px;"> 
+            <fieldset>
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <!-- Le styles -->
-    <link href="../static/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-      }
-    </style>
-
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="images/favicon.ico">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-  </head>
-
-  <body>
- 
-    <div class="topbar">
-      <div class="fill">
-        <div class="container">
-          <a class="brand" href="/">Helpp.me</a>
-          <ul class="nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">Electronics</a></li>
-            <li><a href="#contact">Air Travel</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="container">
-      <!-- Main hero unit for a primary marketing message or call to action -->
-        <div class="row">
-          <div class = "span3">
-            &nbsp;
-          </div>
-
-          <div class = "span10 colored-border">
-            {{ form.title.error }}
-            {{ form.url.error }}
-            {{ form.price.error }}
-            {{ form.categories.error }}
-            {{ form.csrf.error }}
-          
-            <form class="form-stacked" method="POST" action="/post"> 
-              <fieldset >
-                <legend><h1>Share a deal <small> tell us more about it</small></h1></legend>
-                <hr style = "margin-top:0px"/>
-                {{ form.csrf }}
-
-                <div class="clearfix">
-                  <label for="Item">What did you find?</label>
-                  <div class="input">
-                    {{ form.title(class="span7", type="text", placeholder="Write a short title for this deal") }}
-                    <!-- <input class="span6" id="Item" name="Item" type="text" placeholder="What did you find?" /> -->
-                  </div>
+                <div id="csrf">
+                  {{ form.csrf }}
                 </div>
-                <br />
-                <div class="clearfix">
-                  <label for="url">Where can we find it?</label>
-                  <div class="input">
-                    {{ form.url(class="span7", type="text", placeholder="Type the website URL or just the store name") }}
-                    <!-- <input class="span6" id="URL" name="URL" type="text" placeholder="Where did you find it?" /> -->
-                  </div>
-                </div>
-                <br />  
-                <div class="clearfix">
-                  <label for="categories">Category</label>
-                  <div class="input">
-                    {{ form.categories(class="span3") }}
-                    <!-- <input class="span2" id="Price" name="Price" type="text" placeholder="How much?" /> -->
-                  </div>
-                </div>
-                <br />
-                <div class="clearfix">
-                  <label for="description">Description (optional)</label>
-                  <div class="input">
-                    {{ form.description(class="span7", rows=7, placeholder="any additional details or instructions?") }}
-                    <!-- <input class="span2" id="Price" name="Price" type="text" placeholder="How much?" /> -->
-                  </div>
-                </div>
+                <!-- CSRF -->
                 
-                <div class="actions">
-                  <input type="submit" class="btn primary large" value="Submit">
+                <div class="clearfix" id="title">
+                  <label for="title">1. What did you find?</label>
+                  <div class="input">
+                      <input class="span8" id="title" name="title" type="text" tabindex="1"/>
+                  </div>
                 </div>
-                    
-              </fieldset>
-            </form>
-          </div>
+                <!-- title -->
 
-          <div class = "span3">
-            &nbsp;
-          </div>
+                <div class="clearfix" id="category">
+                  <label for="categories">2. What category is it?</label>
+                  <div class="input">
+                    <select tabindex="2" data-placeholder="Choose a Category..." class="chzn-select" id="categories" name="categories" standard style="width:350px;">
+                    <!-- <select class="medium" id="categories" name="categories"> -->
+                    {% for category in categories %}
+                      {% if loop.first == False %}
+                        <option>{{ category|capitalize }}</option> 
+                      {% endif %}
+                    {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <!-- category -->
 
+                <div class="clearfix" id="location">
+                  <label for="location">3. Where to find it online? <small class="color-grey">(optional)</small></label>
+                  <div class="input">
+                    <input class="span8" id="location" name="location" type="text" tabindex="3" placeholder="http:// ..."/>
+                    <span class="help-block">Leave blank if the deal is not available online</span>
+                  </div>
+                </div>
+                <!--  location -->
+                
+                <div class="clearfix" id="description" style="margin-bottom: 0px;">
+                  <label for="description">4. Additional info <small class="color-grey">(optional)</small></label>
+                  <div class="input">
+                    <textarea class="span8" id="description" name="description" type="text" rows=5 tabindex="4"/></textarea>
+                    <span class="help-block"><a>Text formatting tips</a></span> 
+                  </div>
+                </div>
+                <!-- description -->
+
+                <div class="actions clearfix span8" style="margin-top: 20px;">
+                  <input id="deal-submit-button" type="submit" class="btn primary" value="Submit" tabindex="5">
+                  <button type="reset" class="btn" href="#" onclick="cancelFormSubmit(); return false;">Cancel</button>
+                </div>
+                <!-- buttons -->
+
+             </fieldset>
+          </form>
+          <!-- submit-form -->
         </div>
-      
-      <footer>
-        <p>copyrighted 2011</p>
-      </footer>
+        <!-- well -->
+      </div>
+      <!-- span-two-thirds-->
 
-    </div> <!-- /container -->
+      <div class="span-one-third" style="margin-left: 0px;">
 
-  </body>
+        <blockquote>
+          <h3 style="font-family: 'Love Ya Like A Sister', cursive">Dear {{ user.name|capitalize }}, <br />Thank you for fueling our shopaholism by sharing this deal. Our addictions thank you :)</h3>
+          <br />
+          <h5 class="color-grey" >
+          - The Saving Community
+          </h5>
+        </blockquote>
+        
+      </div>
+     <!-- span one third -->    
+    </div>
+    <!-- span row -->  
+  </div>
+{% endblock %}
+
+{% block javascript %}
+<!-- Chosen -->
+<script type="text/javascript" src="http://127.0.0.1:5000/static/js/chosen/chosen.jquery.min.js"></script>
+<script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
 <!--SHARE THIS-->
-<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e883fb86021d9b6"></script>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e883fb86021d9b6">
+</script>
 <!--SHARE discuss-->
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -129,5 +112,4 @@
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
-</html>
-</html>
+{% endblock %}
